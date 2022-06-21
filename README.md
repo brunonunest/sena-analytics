@@ -1,10 +1,10 @@
 # sena-analytics
 
-Main tools:
+# Main tools:
 
-Python - MongoDB
+Python - Pandas - MongoDB
 
-How to Run?
+# How to Run?
 
 Install python + pip lib for installing the tools
 
