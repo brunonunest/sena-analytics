@@ -1,4 +1,7 @@
 import pymongo
+import requests
+import json
+import datetime
 import pandas as pd
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -275,22 +278,32 @@ listdata = [
     }
 ]
 
-#start iteration to calculate SENA NFT total ry
-total = 0
-datatopd = []
+#set variables for the lists
+rawdata = []
+mongodata = []
+
 for obj in listdata:
-    if obj["receipts"]:
-        for value in obj["receipts"]:
-            datatopd.append(value)
-df = pd.DataFrame(datatopd)
-for obj in df.iterrows():
-    if obj[1]["to"] == senaddress:
-        total += obj[1]["value"]
+    ts1 = obj["timestamp"]/1000
+    ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+    ts1 = ts.split("T")
+    tsf = ts1[0]
+    for obj2 in obj["receipts"]:
+        try:
+            if obj2["to"] == senaddress:
+                rawdata.append({"amount": obj2["value"], "datetime": tsf})
+        except:
+            print("NOT SENA DATA")
+
+#start iteration to calculate SENA NFT total ry
+df = pd.DataFrame(rawdata)
+dfsum = df.groupby(df.datetime)['amount'].sum()
+flist = dfsum.to_dict()
+mongodata.append(flist)
 
 #upload total for SENA NFT Royalties
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
 db = client.prod
 #db = client.test
-senanftry = db["senanftry"]
-x = senanftry.insert_one({"total": total})
+senanftrybyday = db["senanftrybyday"]
+x = senanftrybyday.insert_many(mongodata)
 print("MongoDB Updated")

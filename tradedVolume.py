@@ -36,6 +36,7 @@ df = pd.DataFrame(rawdata)
 dfsum = df.groupby(df.assetbytime)['amount'].sum()
 flist = dfsum.to_dict()
 mongodata.append(flist)
+print(mongodata)
 
 #add data to mongodb
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
