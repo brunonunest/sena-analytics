@@ -7,12 +7,11 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-#params = {'q': 'requests+language:python'}
-
 #step1 get klever api.devnet data and parse .json
 #rs = requests.get("https://api.devnet.klever.finance/v1.0/transaction/list?type=0")
-#rs = requests.get("https://api.testnet.klever.finance/v1.0/transaction/list?type=0", params = {'q': 'requests+language:python'})
+#rs = requests.get("https://api.testnet.klever.finance/v1.0/transaction/list?type=0"})
 #data = json.loads(rs.text)
+
 data = [{
 				"hash": "50849de5400f6928238cfbc1e6d77b098a10aec0dcd19707aa9460accb09dafb",
 				"blockNum": 57315,

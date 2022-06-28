@@ -296,9 +296,9 @@ for obj in listdata:
 
 #start iteration to calculate SENA NFT total ry
 df = pd.DataFrame(rawdata)
-dfsum = df.groupby(df.datetime)['amount'].sum()
-flist = dfsum.to_dict()
-mongodata.append(flist)
+dfsum = df.groupby(df.datetime).sum()
+for k, v in dfsum.iterrows():
+    mongodata.append({"amount": k, "datetime": float(v[0])})
 
 #upload total for SENA NFT Royalties
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")

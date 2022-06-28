@@ -27,21 +27,23 @@ for k, v in data.items():
                 amount = float(obj["receipts"][1]["value"])
                 asset = obj["receipts"][1]["assetId"].upper()
                 rawdata.append({"amount": amount, "assetbytime": asset + " " + tsf})
-                print("Data extracted from Klever API")
+                #print("Data extracted from Klever API")
             except:
-                print("Error on Klever API Response")
+                #print("Error on Klever API Response")
+                pass
 
 #calculate total amount for assetbytime and add on mongodata
 df = pd.DataFrame(rawdata)
-dfsum = df.groupby(df.assetbytime)['amount'].sum()
-flist = dfsum.to_dict()
-mongodata.append(flist)
-print(mongodata)
+print(df)
+dfsum = df.groupby(df.assetbytime).min()
+for k, v in dfsum.iterrows():
+    mongodata.append({"assetbyday": k, "amount": v[0]})
+
 
 #add data to mongodb
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
 db = client.prod
 #db = client.test
-nftvolumes = db["nftvolumes"]
-x = nftvolumes.insert_many(mongodata)
+tradedvolumebyday = db["tradedvolumebyday"]
+x = tradedvolumebyday.insert_many(mongodata)
 print("MongoDB Updated")
