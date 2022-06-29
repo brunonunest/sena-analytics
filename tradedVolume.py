@@ -37,7 +37,8 @@ df = pd.DataFrame(rawdata)
 print(df)
 dfsum = df.groupby(df.assetbytime).min()
 for k, v in dfsum.iterrows():
-    mongodata.append({"assetbyday": k, "amount": v[0]})
+    k2 = k.split(" ")
+    mongodata.append({"asset": k2[0], "amount": v[0], "datetime": k2[1]})
 
 
 #add data to mongodb

@@ -298,7 +298,7 @@ for obj in listdata:
 df = pd.DataFrame(rawdata)
 dfsum = df.groupby(df.datetime).sum()
 for k, v in dfsum.iterrows():
-    mongodata.append({"amount": k, "datetime": float(v[0])})
+    mongodata.append({"amount": float(v[0]), "datetime": k})
 
 #upload total for SENA NFT Royalties
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
