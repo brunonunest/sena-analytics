@@ -27,14 +27,11 @@ for k, v in data.items():
                 amount = float(obj["receipts"][1]["value"])
                 asset = obj["receipts"][1]["assetId"].upper()
                 rawdata.append({"amount": amount, "assetbytime": asset + " " + tsf})
-                #print("Data extracted from Klever API")
             except:
-                #print("Error on Klever API Response")
                 pass
 
 #calculate total amount for assetbytime and add on mongodata
 df = pd.DataFrame(rawdata)
-print(df)
 dfsum = df.groupby(df.assetbytime).min()
 for k, v in dfsum.iterrows():
     k2 = k.split(" ")

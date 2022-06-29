@@ -33,9 +33,13 @@ dfmin = df.groupby(df.datetime).min()
 for k, v in dfmin.iterrows():
     mongodata.append({"floorprice": v["price"], "datetime": k})
 
+
+
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
 db = client.prod
 #db = client.test
 floorpricebyday = db["floorpricebyday"]
+#setup index, once only
+#index = db.floorpricebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
 x = floorpricebyday.insert_many(mongodata)
 print("MongoDB Updated")

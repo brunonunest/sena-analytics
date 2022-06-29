@@ -74,13 +74,11 @@ mongodata = []
 
 #loop between klever .json and filter data to rawdata
 for obj in data:
-	print(obj)
 	ts = datetime.datetime.fromtimestamp(obj["timestamp"]/1000).isoformat()
 	ts1 = ts.split("T")
 	tsf = ts1[0]
 	mongodata.append({"senavolume": obj["contract"][0][ "parameter"]["price"], "datetime": tsf})
 
-print(mongodata)
 #add data to mongodb
 client = pymongo.MongoClient("mongodb+srv://senadbnew:11223344@clusternft.7fhtj.mongodb.net/?retryWrites=true&w=majority")
 db = client.prod
