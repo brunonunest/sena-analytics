@@ -38,7 +38,7 @@ tsf = ts1[0]
 #upload total for transactions count
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prod
+    db = client.prodmainnet
     totaltransactions = db["totaltransactions"]
     x = totaltransactions.insert_one({"total": total, "datetime": tsf})
     print("MongoDB Updated")

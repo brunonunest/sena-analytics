@@ -25,7 +25,7 @@ for obj in data:
 #add data to mongodb
 try:
 	client = pymongo.MongoClient(mongourl)
-	db = client.prod
+	db = client.prodmainnet
 	senanftvolume = db["senanftvolume"]
 	x = senanftvolume.insert_one({"senavolume": total})
 	print("MongoDB Updated")

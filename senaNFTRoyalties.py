@@ -49,7 +49,7 @@ except:
 #upload data to mongo
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prod
+    db = client.prodmainnet
     senanftrybyday = db["senanftrybyday"]
     x = senanftrybyday.insert_many(mongodata)
     print("MongoDB Updated")

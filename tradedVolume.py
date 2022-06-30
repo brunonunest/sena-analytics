@@ -50,7 +50,7 @@ for k, v in dfsum.iterrows():
 #add data to mongodb
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prod
+    db = client.prodmainnet
     tradedvolumebyday = db["tradedvolumebyday"]
     x = tradedvolumebyday.insert_many(mongodata)
     print("MongoDB Updated")

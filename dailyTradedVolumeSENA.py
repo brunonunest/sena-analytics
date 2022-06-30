@@ -31,7 +31,7 @@ for obj in data:
 #upload data to mongodb
 try:
 	client = pymongo.MongoClient(mongourl)
-	db = client.prod
+	db = client.prodmainnet
 	senanftvolumebyday = db["senanftvolumebyday"]
 	x = senanftvolumebyday.insert_many(mongodata)
 	print("MongoDB Updated")

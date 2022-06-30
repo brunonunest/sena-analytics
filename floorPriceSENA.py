@@ -47,7 +47,7 @@ for k, v in dfmin.iterrows():
 #upload data to mongodb
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prod
+    db = client.prodmainnet
     floorpricebyday = db["floorpricebyday"]
     x = floorpricebyday.insert_many(mongodata)
     print("MongoDB Updated")

@@ -32,7 +32,7 @@ for obj in data["data"]["transactions"]:
 # add data to mongodb
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prod
+    db = client.prodmainnet
     nftvolumes = db["nftvolumes"]
     x = nftvolumes.insert_many(mongodata)
     print("MongoDB Updated")
