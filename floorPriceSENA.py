@@ -12,7 +12,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
-rs = requests.get(url + "/transaction/list?type=18&asset=" + asset)
+rs = requests.get(url + "/transaction/list?type=17&asset=" + asset)
 data = json.loads(rs.text)
 
 #set variables for the lists

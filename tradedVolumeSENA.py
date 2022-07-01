@@ -26,8 +26,10 @@ for obj in data:
 try:
 	client = pymongo.MongoClient(mongourl)
 	db = client.prodmainnet
-	senanftvolume = db["senanftvolume"]
-	x = senanftvolume.insert_one({"senavolume": total})
+	senatotalvolume = db["senatotalvolume"]
+	senatotalvolume.drop()
+	senatotalvolume = db["senatotalvolume"]
+	x = senatotalvolume.insert_one({"total": total})
 	print("MongoDB Updated")
 except:
     print("Error trying to upload data")

@@ -1,7 +1,6 @@
 import pymongo
 import requests
 import json
-import pandas as pd
 import ssl
 from decouple import config
 
