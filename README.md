@@ -18,9 +18,12 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 6. Install the Python imports using `pip install -r requirements.txt`
 
-7. Run the code files to activate the pipelines, having the env activated within the libs of last step
+7. Run the code files to activate the pipelines, example : `python tradedVolume.py`, having the env activated within the libs of last step
+
+** If having problems upolading data to mongodb, try running `python sslLoad.py` before pipeline file
 
 #How to Run on Docker?
 
 1. docker build -t python-flask:latest .
+
 2. docker run -d python-flask
