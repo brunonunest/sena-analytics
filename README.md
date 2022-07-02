@@ -20,6 +20,8 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 7. Run the code files to activate the pipelines, example : `python tradedVolume.py`, having the env activated within the libs of last step
 
+
+* `createIndexes.py` is for creating the indexes and constraints, this file needs to be run once
 ** If having problems upolading data to mongodb, try running `python sslLoad.py` before pipeline file
 
 #How to Run on Docker?
