@@ -26,6 +26,6 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 # How to Run on Docker?
 
-1. docker build -t python-flask:latest .
+1. `docker build -t python-flask:latest .`
 
-2. docker run -d python-flask
+2. `docker run -d python-flask`
