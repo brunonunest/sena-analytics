@@ -16,7 +16,7 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 5. To activate it use: `source env/bin/activate`
 
-6. Install the Python imports using pip install -r requirements.txt
+6. Install the Python imports using `pip install -r requirements.txt`
 
 7. Run the code files to activate the pipelines, having the env activated within the libs of last step
 
