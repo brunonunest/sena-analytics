@@ -2,7 +2,7 @@
 
 # Main tools:
 
-Python - Pandas - MongoDB
+Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 # How to Run?
 
@@ -16,6 +16,11 @@ Python - Pandas - MongoDB
 
 5. To activate it use: `source env/bin/activate`
 
-6. Install the Python imports using pip: `pip install pymongo`, `pip install pandas`  and `pip install requests`
+6. Install the Python imports using pip install -r requirements.txt
 
-7. Run the code step by step, having the env activated within the libs of last step
+7. Run the code files to activate the pipelines, having the env activated within the libs of last step
+
+#How to Run on Docker?
+
+1. docker build -t python-flask:latest .
+2. docker run -d python-flask
