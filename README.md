@@ -24,7 +24,7 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 ** `createIndexes.py` is for creating the indexes and constraints, this file needs to be run once
 ** If having problems upolading data to mongodb, try running `python sslLoad.py` before pipeline file
 
-#How to Run on Docker?
+# How to Run on Docker?
 
 1. docker build -t python-flask:latest .
 
