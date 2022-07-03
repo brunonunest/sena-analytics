@@ -20,6 +20,7 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 7. Run the code files to activate the pipelines, example : `python tradedVolume.py`, having the env activated within the libs of last step
 
+** Set code variables on a `.env` file as `.env.example` shows
 
 ** `createIndexes.py` is for creating the indexes and constraints, this file needs to be run once.
 
