@@ -46,13 +46,12 @@ for k, v in dfsum.iterrows():
     except:
         print("Error trying to iterate df and adding data to list")
 
-print(mongodata)
 #add data to mongodb
-
-client = pymongo.MongoClient(mongourl)
-db = client.prodmainnet
-tradedvolumebyday = db["tradedvolumebyday"]
-x = tradedvolumebyday.insert_many(mongodata)
-print("MongoDB Updated")
-
-#print("Error trying to upload data")
+try:
+    client = pymongo.MongoClient(mongourl)
+    db = client.prodmainnet
+    tradedvolumebyday = db["tradedvolumebyday"]
+    x = tradedvolumebyday.insert_many(mongodata)
+    print("MongoDB Updated")
+except:
+    print("Error trying to upload data")
