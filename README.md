@@ -25,6 +25,8 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 ** If having problems upolading data to mongodb, try running `python sslLoad.py` before pipeline file.
 
+** Pipelines are online and scheduled to run daily on heroku.com
+
 # How to Run on Docker?
 
 1. `docker build -t sena-analytics:latest .`
