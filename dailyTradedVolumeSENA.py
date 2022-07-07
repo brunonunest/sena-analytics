@@ -12,7 +12,12 @@ mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 rs = requests.get(url + "/transaction/list?type=17&asset=" + asset)
-data = json.loads(rs.text)
+data = dict()
+try:
+	data = json.loads(rs.text)
+except:
+	print("Request response error")
+	data = dict()
 
 #set variables for the lists
 mongodata = []

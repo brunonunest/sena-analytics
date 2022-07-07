@@ -12,7 +12,12 @@ ssl._create_default_https_context = ssl._create_unverified_context
 url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
 rs = requests.get(url + "/transaction/list?type=17&status=success")
-data = json.loads(rs.text)
+data = dict()
+try:
+    data = json.loads(rs.text)
+    print("Request response OK")
+except:
+    print("Request response error")
 
 #set variables for the lists
 rawdata = []
@@ -34,13 +39,17 @@ for k, v in data.items():
                 print("Invalid or empty data")
 
 #calculate total amount for assetbytime and add on mongodata
-df = pd.DataFrame(rawdata)
-dfsum = df.groupby(df.datetime).sum()
+df = dfsum = pd.DataFrame()
+try:
+    df = pd.DataFrame(rawdata)
+    dfsum = df.groupby(df.datetime).sum()
+    print("Pandas Dataframe created")
+except:
+    print("Pandas Dataframe error")
 
 #iterate in df to fix keys and add to mongodata
 for k, v in dfsum.iterrows():
     try:
-        #k2 = k.split(" ")
         mongodata.append({"amount": v[0], "datetime": k})
         print("Data added to flist")
     except:

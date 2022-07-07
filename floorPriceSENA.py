@@ -1,3 +1,4 @@
+from genericpath import exists
 import pymongo
 import requests
 import json
@@ -13,28 +14,41 @@ mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 rs = requests.get(url + "/transaction/list?type=17&asset=" + asset)
-data = json.loads(rs.text)
+data = dict()
+try:
+    data = json.loads(rs.text)
+    print("Request response OK")
+except:
+    print("Request response error")
 
 #set variables for the lists
 rawdata = []
 mongodata = []
 
-#loop between klever .json and filter data to mongodata
-for obj in data["data"]["transactions"]:
-    try:
-        ts1 = obj["timestamp"]/1000
-        ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-        ts1 = ts.split("T")
-        tsf = ts1[0]
-        price = float(obj["contract"][0][ "parameter"]["price"])
-        rawdata.append({"price": price, "datetime": tsf}) 
-        print("Data added to list")
-    except:
-        print("Invalid or no Data")
+#loop between klever .json and filter data to mongodata, if response is valid
+if len(data) > 1:
+    for obj in data["data"]["transactions"]:
+        try:
+            ts1 = obj["timestamp"]/1000
+            ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+            ts1 = ts.split("T")
+            tsf = ts1[0]
+            price = float(obj["contract"][0][ "parameter"]["price"])
+            rawdata.append({"price": price, "datetime": tsf}) 
+            print("Data added to list")
+        except:
+            print("Invalid or no Data")
+else:
+    print("Request returned no data")
 
 #calculate floorprice on data
-df = pd.DataFrame(rawdata)
-dfmin = df.groupby(df.datetime).min()
+df = dfmin = pd.DataFrame()
+try:
+    df = pd.DataFrame(rawdata)
+    dfmin = df.groupby(df.datetime).min()
+    print("Pandas Dataframe created")
+except:
+    print("Pandas Dataframe error")
 
 #loop dataframe to filter and clean data
 for k, v in dfmin.iterrows():
