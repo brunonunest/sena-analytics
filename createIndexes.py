@@ -15,5 +15,6 @@ try:
     index4 = db.senanftvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index5 = db.totaltransactions.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index6 = db.tradedvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
+    print("Indexes created/updated")
 except:
-    print("Error trying ton create indexes")
+    print("Error trying to create indexes")

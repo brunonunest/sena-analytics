@@ -14,29 +14,46 @@ url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 address = config('ROYALTIES_ADDRESS')
 rs = requests.get(url + "/v1.0/transaction/list?type=17&asset=" + asset)
-data = json.loads(rs.text)
+data = dict()
+try:
+    data = json.loads(rs.text)
+    print("Request response OK")
+except:
+    print("Request response error")
 
 #set variables for the lists
 rawdata = []
 mongodata = []
 
 #loop in data to get royalties
-for obj in data:
-    ts1 = obj["timestamp"]/1000
-    ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-    ts1 = ts.split("T")
-    tsf = ts1[0]
-    for obj2 in obj["receipts"]:
+if len(data) > 1: 
+    for obj in data:
         try:
-            if obj2["to"] == address:
-                rawdata.append({"amount": obj2["value"], "datetime": tsf})
-                print("Data added to list")
+            ts1 = obj["timestamp"]/1000
+            ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+            ts1 = ts.split("T")
+            tsf = ts1[0]
+            print("Timestamp defined")
         except:
-            print("Invalid or no Data")
+            print("Timestamp not found")
+        for obj2 in obj["receipts"]:
+            try:
+                if obj2["to"] == address:
+                    rawdata.append({"amount": obj2["value"], "datetime": tsf})
+                    print("Data added to list")
+            except:
+                print("Invalid or no Data")
+else:
+    print("Request returned no data")
 
 #start iteration to calculate SENA NFT total ry
-df = pd.DataFrame(rawdata)
-dfsum = df.groupby(df.datetime).sum()
+df = dfsum = pd.DataFrame()
+try:
+    df = pd.DataFrame(rawdata)
+    dfsum = df.groupby(df.datetime).sum()
+    print("Pandas Dataframe created")
+except:
+    print("Pandas Dataframe error")
 
 #transpose keys to match dict type
 try:

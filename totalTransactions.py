@@ -16,7 +16,12 @@ url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
 furl = url + "/transaction/list?startdate=" + str(startdate) + "000" + "&enddate=" + str(enddate) + "000"
 rs = requests.get(furl)
-data = json.loads(rs.text)
+data = dict()
+try:
+    data = json.loads(rs.text)
+    print("Request response OK")
+except:
+    print("Request response error")
 
 #set variable for total
 total = 0
