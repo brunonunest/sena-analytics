@@ -11,7 +11,7 @@ try:
     db = client.prodmainnet
     index1 = db.floorpricebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index2 = db.nftvolumes.create_index([('asset', pymongo.ASCENDING)],unique=True)
-    index3 = db.senanfgittrybyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
+    index3 = db.senanftrybyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index4 = db.senanftvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index5 = db.totaltransactions.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index6 = db.tradedvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
