@@ -19,6 +19,7 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 6. Install the Python imports using `pip install -r requirements.txt`
 
 7. Run the code files to activate the pipelines, example : `python tradedVolume.py`, having the env activated within the libs of last step
+  - List of python pipelines files: `tradedVolume.py`, `dailyTradedVolumeSENA.py`, `floorPriceSENA.py`, `NFTTradedVolume.py`, `senaNFTRoyalties.py`, `totalTransactions.py`, `tradedVolumeSENA.py`
 
 ** Set code variables on a `.env` file as `.env.example` shows
 
