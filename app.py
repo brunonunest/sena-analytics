@@ -1,5 +1,5 @@
-# save this as app.py, for docker use only
-from flask import Flask, escape, request
+#code for docker build use only, creating an example of our app on docker
+from flask import Flask
 
 app = Flask(__name__)
 
