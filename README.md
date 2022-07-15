@@ -28,6 +28,8 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 ** Pipelines are online and scheduled to run daily on heroku.com
 
+** Pipelines connected to devnet sometimes return no data, the code will print where no data stops the pipeline process and finish running normally
+
 # How to Run on Docker?
 
 1. `docker build -t sena-analytics:latest .`
