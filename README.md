@@ -1,8 +1,8 @@
 # sena-analytics
 
-# Main tools:
+# Main Python libs:
 
-Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
+Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 # How to Run?
 
