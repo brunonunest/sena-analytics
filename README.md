@@ -26,7 +26,7 @@ Python - Pandas - MongoDB - Decouple - Flask (For the Docker)
 
 ** If having problems upolading data to mongodb, try running `python sslLoad.py` before pipeline file.
 
-** Pipelines are online and scheduled to run daily on heroku.com
+** Pipelines are online and scheduled to run daily on heroku.com, so the docker build is only for demonstration
 
 ** Pipelines connected to devnet sometimes return no data, the code will print where no data stops the pipeline process and finish running normally
 
