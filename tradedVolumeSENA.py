@@ -46,3 +46,5 @@ try:
 	print("MongoDB Updated")
 except:
     print("Error trying to upload data")
+
+#TODO: Adicionar págination

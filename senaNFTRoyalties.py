@@ -26,7 +26,7 @@ rawdata = []
 mongodata = []
 
 #loop in data to get royalties
-if len(data) > 1: 
+if len(data) > 1: #TODO: Maior que 0 
     for obj in data:
         try:
             ts1 = obj["timestamp"]/1000
@@ -72,3 +72,5 @@ try:
     print("MongoDB Updated")
 except:
     print("Error trying to upload data")
+
+#TODO: Adicionar págination

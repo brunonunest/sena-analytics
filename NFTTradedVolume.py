@@ -21,7 +21,7 @@ except:
 mongodata = []
 
 #loop in receipts and contract to get data
-if len(data) > 1:
+if len(data) > 1: #TODO: Data tem que ser maior que 0 não 1 (ver em outras partes do código)
     for obj in data["data"]["transactions"]:
         for obj2 in obj["receipts"]:
             for k, v in obj2.items():
@@ -45,3 +45,9 @@ try:
     print("MongoDB Updated")
 except:
     print("Error trying to upload data")
+
+#TODO: Adicionar páginação para caso tenha mais páginas 
+#TODO: Está somando ou gravando o dado por transação? 
+#TODO: Loop ta incorreto, precisa revisar (está buscando contrato dentro do receipt)
+#! Verificar se todas as queries são por success transactions
+#! Criar teste unitários com JSON estáticos

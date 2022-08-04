@@ -42,3 +42,7 @@ try:
 	print("MongoDB Updated")
 except:
 	print("Error trying to upload data")
+
+#---------------------
+# Daily Traded Volume
+# TODO:  Considerar mais de um contrato na transação - pode ter mais de um buy dentro de uma transação

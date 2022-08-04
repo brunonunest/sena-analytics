@@ -67,3 +67,8 @@ try:
     print("MongoDB Updated")
 except:
 	print("Error trying to upload data")
+
+#floorPrice SENA
+#TODO: Alterar busca para contrato de SELL
+#! ADC PÁGINAÇÃO EM TODOS OS SCRIPTS
+#! SEPARAR POR PASTA OS SCRIPTS DO SENA
