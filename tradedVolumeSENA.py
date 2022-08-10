@@ -11,11 +11,11 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
-rs = requests.get(url + "/transaction/list?type=17&asset=" + asset, headers=headers)
-data = {'data': {'transactions': {}}}
+rs = requests.get(url + "/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
+data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 try:
-    data = json.loads(rs.text)
-    print("Request response OK")
+	data = json.loads(rs.text)
+	print("Request response OK")
 except:
     print("Request response error")
 
@@ -24,17 +24,13 @@ mongodata = []
 total = 0
 
 #loop between klever .json and filter data to rawdata
-for k, v in data.items():
-	if k == "data" and len(v["transactions"]) > 1:
-		for obj in v["transactions"]:
-			for obj2 in obj["contract"]:
-				try:
-					total += obj2["parameter"]["price"]
-					print("Data added to flist")
-				except:
-					print("Error trying to iterate df and adding data to list")
-	else:
-		print("Request returned no data")
+for obj in data["data"]["transactions"]:
+	for obj2 in obj["contract"]:
+		try:
+			total += obj2["parameter"]["price"]
+			print("Data added to flist")
+		except:
+			print("Error trying to iterate df and adding data to list")
 
 #add data to mongodb
 try:

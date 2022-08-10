@@ -14,8 +14,8 @@ mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 address = config('ROYALTIES_ADDRESS')
-rs = requests.get(url + "/v1.0/transaction/list?type=17&asset=" + asset, headers=headers)
-data = dict()
+rs = requests.get(url + "/v1.0/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
+data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 try:
     data = json.loads(rs.text)
     print("Request response OK")
@@ -27,25 +27,23 @@ rawdata = []
 mongodata = []
 
 #loop in data to get royalties
-if len(data) > 1: #TODO: Maior que 0 
-    for obj in data:
+#if len(data) > 1: #TODO: Maior que 0 
+for obj in data["data"]["transactions"]:
+    try:
+        ts1 = obj["timestamp"]/1000
+        ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+        ts1 = ts.split("T")
+        tsf = ts1[0]
+        print("Timestamp defined")
+    except:
+        print("Timestamp not found")
+    for obj2 in obj["receipts"]:
         try:
-            ts1 = obj["timestamp"]/1000
-            ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-            ts1 = ts.split("T")
-            tsf = ts1[0]
-            print("Timestamp defined")
+            if obj2["to"] == address:
+                rawdata.append({"amount": obj2["value"], "datetime": tsf})
+                print("Data added to list")
         except:
-            print("Timestamp not found")
-        for obj2 in obj["receipts"]:
-            try:
-                if obj2["to"] == address:
-                    rawdata.append({"amount": obj2["value"], "datetime": tsf})
-                    print("Data added to list")
-            except:
-                print("Invalid or no Data")
-else:
-    print("Request returned no data")
+            print("Invalid or no Data")
 
 #start iteration to calculate SENA NFT total ry
 df = dfsum = pd.DataFrame()
@@ -75,3 +73,4 @@ except:
     print("Error trying to upload data")
 
 #TODO: Adicionar págination
+#CHECAR ASSET ID DO SENA

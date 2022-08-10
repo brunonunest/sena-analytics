@@ -15,11 +15,12 @@ startdate = (int(rawstartdate[0]) - 86400)
 enddate = (int(rawstartdate[0]) - 1)
 url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
-furl = url + "/transaction/list?startdate=" + str(startdate) + "000" + "&enddate=" + str(enddate) + "000"
+furl = url + "/transaction/list?status=success&startdate=" + str(startdate) + "000" + "&enddate=" + str(enddate) + "000"
 rs = requests.get(furl, headers=headers)
-data = dict()
+data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 try:
     data = json.loads(rs.text)
+    print(data)
     print("Request response OK")
 except:
     print("Request response error")
@@ -36,10 +37,14 @@ for obj in data:
         print("Invalid or no Data")
 
 #convert timestamp to date
-ts1 = startdate
-ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-ts1 = ts.split("T")
-tsf = ts1[0]
+tsf = 0
+try:
+    ts1 = startdate
+    ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+    ts1 = ts.split("T")
+    tsf = ts1[0]
+except:
+    print("Datetime lib error")
 
 #upload total for transactions count
 try:

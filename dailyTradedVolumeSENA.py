@@ -12,26 +12,26 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
-rs = requests.get(url + "/transaction/list?type=17&asset=" + asset, headers=headers)
-data = dict()
+rs = requests.get(url + "/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
+data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 try:
 	data = json.loads(rs.text)
-	print(data)
+	#print(data)
 except:
 	print("Request response error")
-	data = dict()
 
 #set variables for the lists
 mongodata = []
 
 #loop between klever .json and filter data to mongodata
-for obj in data:
+for obj in data["data"]["transactions"]:
 	try:
-		ts = datetime.datetime.fromtimestamp(obj["timestamp"]/1000).isoformat()
-		ts1 = ts.split("T")
-		tsf = ts1[0]
-		mongodata.append({"senavolume": obj["contract"][0][ "parameter"]["price"], "datetime": tsf})
-		print("Data added to list")
+			ts = datetime.datetime.fromtimestamp(obj["timestamp"]/1000).isoformat()
+			ts1 = ts.split("T")
+			tsf = ts1[0]
+			#talvez fzer um loop aqui em obj["contract"], checar retorno exemplo**
+			mongodata.append({"senavolume": obj["contract"][0][ "parameter"]["price"], "datetime": tsf})
+			print("Data added to list")
 	except:
 		print("Invalid or no Data")
 
@@ -47,4 +47,4 @@ except:
 
 #---------------------
 # Daily Traded Volume
-# TODO:  Considerar mais de um contrato na transação - pode ter mais de um buy dentro de uma transação
+# TODO:  Considerar mais de um contrato na transação - pode ter mais de um buy dentro de uma transação! **OK, MAS ISSO SERIA 1 KEY CONTRACT COM +1 OBJETO, OU 2+ KEYS?

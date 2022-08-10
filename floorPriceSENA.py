@@ -13,11 +13,11 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
-rs = requests.get(url + "/transaction/list?type=17&asset=" + asset, headers=headers)
-data = dict()
+rs = requests.get(url + "/transaction/list?type=18&status=success&asset=" + asset, headers=headers)
+data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
+    print(data)
 except:
     print("Request response error")
 
@@ -26,20 +26,18 @@ rawdata = []
 mongodata = []
 
 #loop between klever .json and filter data to mongodata, if response is valid
-if len(data) > 1:
-    for obj in data["data"]["transactions"]:
-        try:
-            ts1 = obj["timestamp"]/1000
-            ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-            ts1 = ts.split("T")
-            tsf = ts1[0]
-            price = float(obj["contract"][0][ "parameter"]["price"])
-            rawdata.append({"price": price, "datetime": tsf}) 
-            print("Data added to list")
-        except:
-            print("Invalid or no Data")
-else:
-    print("Request returned no data")
+for obj in data["data"]["transactions"]:
+    try:
+        ts1 = obj["timestamp"]/1000
+        ts = datetime.datetime.fromtimestamp(ts1).isoformat()
+        ts1 = ts.split("T")
+        tsf = ts1[0]
+        #talvez fzer um loop aqui em obj["contract"], checar retorno exemplo**
+        price = float(obj["contract"][0][ "parameter"]["price"])
+        rawdata.append({"price": price, "datetime": tsf}) 
+        print("Data added to list")
+    except:
+        print("Invalid or no Data")
 
 #calculate floorprice on data
 df = dfmin = pd.DataFrame()
@@ -69,6 +67,6 @@ except:
 	print("Error trying to upload data")
 
 #floorPrice SENA
-#TODO: Alterar busca para contrato de SELL
-#! ADC PÁGINAÇÃO EM TODOS OS SCRIPTS
-#! SEPARAR POR PASTA OS SCRIPTS DO SENA
+#TODO: Alterar busca para contrato de SELL! OK OK!!!
+#! ADC PÁGINAÇÃO EM TODOS OS SCRIPTS (A FAZER EM TODOS)
+#! SEPARAR POR PASTA OS SCRIPTS DO SENA (OK A FAZER)
