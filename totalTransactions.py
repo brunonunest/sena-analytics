@@ -1,3 +1,4 @@
+from email import header
 import pymongo
 import requests
 import json
@@ -9,13 +10,14 @@ from decouple import config
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # step1 API ref and dates, code MUST RUN at midnight first second
+headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 rawstartdate = str(time.time()).split(".")
 startdate = (int(rawstartdate[0]) - 86400)
 enddate = (int(rawstartdate[0]) - 1)
 url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
 furl = url + "/transaction/list?startdate=" + str(startdate) + "000" + "&enddate=" + str(enddate) + "000"
-rs = requests.get(furl)
+rs = requests.get(furl, headers=headers)
 data = dict()
 try:
     data = json.loads(rs.text)

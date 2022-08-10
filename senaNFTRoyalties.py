@@ -9,11 +9,12 @@ from decouple import config
 ssl._create_default_https_context = ssl._create_unverified_context
 
 #get listdata from klever raw response
+headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 address = config('ROYALTIES_ADDRESS')
-rs = requests.get(url + "/v1.0/transaction/list?type=17&asset=" + asset)
+rs = requests.get(url + "/v1.0/transaction/list?type=17&asset=" + asset, headers=headers)
 data = dict()
 try:
     data = json.loads(rs.text)
