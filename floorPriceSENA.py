@@ -1,4 +1,3 @@
-from genericpath import exists
 import pymongo
 import requests
 import json

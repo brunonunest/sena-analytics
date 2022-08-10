@@ -1,4 +1,3 @@
-from email import header
 import pymongo
 import requests
 import json
