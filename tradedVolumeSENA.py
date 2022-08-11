@@ -13,6 +13,7 @@ url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 rs = requests.get(url + "/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
 	data = json.loads(rs.text)
 	print("Request response OK")
@@ -39,7 +40,7 @@ try:
 	senatotalvolume = db["senatotalvolume"]
 	senatotalvolume.drop()
 	senatotalvolume = db["senatotalvolume"]
-	x = senatotalvolume.insert_one({"total": total})
+	x = senatotalvolume.insert_one({"amount": total})
 	print("MongoDB Updated")
 except:
     print("Error trying to upload data")

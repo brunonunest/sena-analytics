@@ -14,6 +14,7 @@ url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
 rs = requests.get(url + "/transaction/list?type=17&status=success", headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
     data = json.loads(rs.text)
     print("Request response OK")
@@ -32,7 +33,7 @@ for obj in data["data"]["transactions"]:
         ts1 = ts.split("T")
         tsf = ts1[0]
         amount = float(obj["receipts"][1]["value"])
-        rawdata.append({"amount": amount, "datetime": tsf})
+        rawdata.append({"value": amount, "date": tsf})
         print("Data added to list")
     except:
         print("Invalid or empty data")

@@ -16,6 +16,7 @@ asset = config('SENA_ASSET_ID')
 address = config('ROYALTIES_ADDRESS')
 rs = requests.get(url + "/v1.0/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
     data = json.loads(rs.text)
     print("Request response OK")
@@ -40,7 +41,7 @@ for obj in data["data"]["transactions"]:
     for obj2 in obj["receipts"]:
         try:
             if obj2["to"] == address:
-                rawdata.append({"amount": obj2["value"], "datetime": tsf})
+                rawdata.append({"value": obj2["value"], "date": tsf})
                 print("Data added to list")
         except:
             print("Invalid or no Data")

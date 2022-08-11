@@ -18,6 +18,7 @@ mongourl = config('MONGO_URL')
 furl = url + "/transaction/list?status=success&startdate=" + str(startdate) + "000" + "&enddate=" + str(enddate) + "000"
 rs = requests.get(furl, headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
     data = json.loads(rs.text)
     print(data)
@@ -51,7 +52,7 @@ try:
     client = pymongo.MongoClient(mongourl)
     db = client.prodmainnet
     totaltransactions = db["totaltransactions"]
-    x = totaltransactions.insert_one({"total": total, "datetime": tsf})
+    x = totaltransactions.insert_one({"value": total, "date": tsf})
     print("MongoDB Updated")
 except:
     print("Error trying to upload data")

@@ -14,9 +14,10 @@ url = config('PROXY_PROVIDER')
 asset = config('SENA_ASSET_ID')
 rs = requests.get(url + "/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
 	data = json.loads(rs.text)
-	#print(data)
+	print("Request response OK")
 except:
 	print("Request response error")
 
@@ -30,7 +31,7 @@ for obj in data["data"]["transactions"]:
 			ts1 = ts.split("T")
 			tsf = ts1[0]
 			#talvez fzer um loop aqui em obj["contract"], checar retorno exemplo**
-			mongodata.append({"senavolume": obj["contract"][0][ "parameter"]["price"], "datetime": tsf})
+			mongodata.append({"value": obj["contract"][0][ "parameter"]["price"], "date": tsf})
 			print("Data added to list")
 	except:
 		print("Invalid or no Data")

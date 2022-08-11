@@ -12,6 +12,7 @@ url = config('PROXY_PROVIDER')
 mongourl = config('MONGO_URL')
 rs = requests.get(url + "/transaction/list?type=17&status=success", headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
+
 try:
     data = json.loads(rs.text)
     print("Request response OK")
