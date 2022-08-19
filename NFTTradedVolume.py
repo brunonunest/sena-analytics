@@ -41,7 +41,7 @@ for obj in data["data"]["transactions"]:
 # add data to mongodb
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prodmainnet
+    db = client.testnet
     nftvolumes = db["nftvolumes"]
     x = nftvolumes.insert_many(mongodata)
     print("MongoDB Updated")
@@ -51,5 +51,5 @@ except:
 #TODO: Adicionar páginação para caso tenha mais páginas (FALTA ESSE!!!)
 #TODO: Está somando ou gravando o dado por transação? Por transação!
 #TODO: Loop ta incorreto, precisa revisar (está buscando contrato dentro do receipt) TA NAO DOIDAO!!!!
-#! Verificar se todas as queries são por success transactions (FALTA ESSE!!!!!)
+#! Verificar se todas as queries são por success transactions (DONE)
 #! Criar teste unitários com JSON estáticos (ULTIMO!)

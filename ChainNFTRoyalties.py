@@ -8,17 +8,20 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+#change condition from NFT address to NFT assetId
+#remove ASSET= filter and get all data by asset, Also remove env for the ROYALTIES_ADDRESS
 #get listdata from klever raw response
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 mongourl = config('MONGO_URL')
 url = config('PROXY_PROVIDER')
-asset = config('SENA_ASSET_ID')
+#asset = config('SENA_ASSET_ID')
 address = config('ROYALTIES_ADDRESS')
-rs = requests.get(url + "/v1.0/transaction/list?type=17&status=success&asset=" + asset, headers=headers)
+rs = requests.get(url + "/transaction/list?type=17&status=success", headers=headers)
 data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'previous': 1, 'perPage': 10, 'totalPages': 0, 'totalRecords': 0}, 'error': '', 'code': 'successful'}
 
 try:
     data = json.loads(rs.text)
+    print(data)
     print("Request response OK")
 except:
     print("Request response error")
@@ -40,6 +43,7 @@ for obj in data["data"]["transactions"]:
         print("Timestamp not found")
     for obj2 in obj["receipts"]:
         try:
+            #Remove or change this condition, we need RY by NFT asset
             if obj2["to"] == address:
                 rawdata.append({"value": obj2["value"], "date": tsf})
                 print("Data added to list")

@@ -8,6 +8,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+#REMOVE SENA= FILTER e puxar todos os dados por ASSET
 #step1 get klever api.devnet data and parse .json
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 mongourl = config('MONGO_URL')
@@ -52,7 +53,7 @@ except:
 #loop dataframe to filter and clean data
 for k, v in dfmin.iterrows():
     try:
-        mongodata.append({"floorprice": v["price"], "datetime": k})
+        mongodata.append({"value": v["price"], "date": k})
         print("Data added to flist")
     except:
         print("Error trying to iterate df and adding data to list")

@@ -21,7 +21,6 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print(data)
     print("Request response OK")
 except:
     print("Request response error")
