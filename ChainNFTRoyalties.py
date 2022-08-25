@@ -8,6 +8,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+#assetID quando vem em TX tipo 17 e type MarketBuy, sem o assetId da NFT de fato, é um bid
 #change condition from NFT address to NFT assetId
 #remove ASSET= filter and get all data by asset, Also remove env for the ROYALTIES_ADDRESS
 #get listdata from klever raw response

@@ -4,6 +4,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+#CHANGE INDEXES FOR NEW COLLECTIONS MODELS AND FIELDS
 #indexes for mongodb
 try:
     mongourl = config('MONGO_URL')

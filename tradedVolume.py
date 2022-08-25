@@ -8,7 +8,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-#dados por asset
+#dados por asset!!!!!!
 #add index loop for more than 1 item on contracts
 #step1 get klever api.devnet data and parse .json
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
@@ -19,7 +19,6 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    #print(data)
     print("Request response OK")
 except:
     print("Request response error")
@@ -36,8 +35,9 @@ for obj in data["data"]["transactions"]:
         ts1 = ts.split("T")
         tsf = ts1[0]
         buyType = obj["contract"][0]["parameter"]["buyType"]
-        if buyType == 'MarketBuy':
-            print(obj["receipts"][-1])
+        if buyType == 'MarketBuy' and len(obj["receipts"]) == 3:
+            print(len(obj["receipts"]))
+            print(obj["contract"][0]["parameter"]["buyType"])
         amount = obj["contract"][0]["parameter"]["amount"]
         assetId = obj["contract"][0]["parameter"]["id"]
         #amount = float(obj["receipts"][1]["value"])
@@ -73,8 +73,8 @@ try:
     client = pymongo.MongoClient(mongourl)
     db = client.prodmainnet
     tradedvolumebyday = db["tradedvolumebyday"]
-    x = tradedvolumebyday.insert_many(mongodata)
-    print("MongoDB Updated")
+    #x = tradedvolumebyday.insert_many(mongodata)
+    #print("MongoDB Updated")
 except:
     print("Error trying to upload data")
 
