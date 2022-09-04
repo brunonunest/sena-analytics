@@ -8,7 +8,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-# step1 API ref and dates, code MUST RUN at midnight first second
+# step1 API ref and dates, code takes 24 hours before run total txs count, run on correct time!
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 rawstartdate = str(time.time()).split(".")
 startdate = (int(rawstartdate[0]) - 86400)
@@ -29,9 +29,10 @@ except:
 total = 0
 
 #loop to get total
-for obj in data:
+for k, v in data.items():
     try:
-        total += obj["pagination"]["totalRecords"]
+        if k == "pagination":
+            total = v["totalRecords"]
         print("Data added to list")
     except:
         print("Invalid or no Data")
@@ -41,17 +42,15 @@ tsf = 0
 try:
     ts1 = startdate
     ts = datetime.datetime.fromtimestamp(ts1).isoformat()
-    ts1 = ts.split("T")
-    tsf = ts1[0]
 except:
     print("Datetime lib error")
 
 #upload total for transactions count
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.prodmainnet
+    db = client.kmainnet
     totaltransactions = db["totaltransactions"]
-    x = totaltransactions.insert_one({"value": total, "date": tsf})
+    x = totaltransactions.insert_one({"value": total, "datetime": ts})
     print("MongoDB Updated")
 except:
     print("Error trying to upload data")

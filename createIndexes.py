@@ -4,7 +4,7 @@ from decouple import config
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-#CHANGE INDEXES FOR NEW COLLECTIONS MODELS AND FIELDS
+#Update before creating new database and automate on Heroku
 #indexes for mongodb
 try:
     mongourl = config('MONGO_URL')
@@ -12,7 +12,7 @@ try:
     db = client.prodmainnet
     index1 = db.floorpricebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index2 = db.nftvolumes.create_index([('asset', pymongo.ASCENDING)],unique=True)
-    index3 = db.senanftrybyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
+    index3 = db.nftrybyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index4 = db.senanftvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index5 = db.totaltransactions.create_index([('datetime', pymongo.DESCENDING)],unique=True)
     index6 = db.tradedvolumebyday.create_index([('datetime', pymongo.DESCENDING)],unique=True)
