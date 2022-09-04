@@ -48,9 +48,9 @@ except:
 #upload total for transactions count
 try:
     client = pymongo.MongoClient(mongourl)
-    db = client.kmainnet
-    totaltransactions = db["totaltransactions"]
-    x = totaltransactions.insert_one({"value": total, "datetime": ts})
+    db = client.ktestnet
+    totaltransactions24 = db["totaltransactions24"]
+    x = totaltransactions24.insert_one({"value": total, "datetime": ts})
     print("MongoDB Updated")
 except:
     print("Error trying to upload data")
