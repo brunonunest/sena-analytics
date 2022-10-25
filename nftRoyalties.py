@@ -18,7 +18,6 @@ def nftRoyalties(rs):
     mongodata = []
     try:
         data = json.loads(rs.text)
-        print("Request response OK")
     except:
         print("Request response error")
     #loop in data to get royalties
@@ -29,7 +28,6 @@ def nftRoyalties(rs):
             ts1 = ts.split("T")
             tsf = ts1[0]
             currency = obj["contract"][0]["parameter"]["currencyID"]
-            print("Timestamp defined")
         except:
             print("Timestamp not found")
         if obj["contract"][0]["parameter"]["buyType"] == "MarketBuy" and len(obj["receipts"]) == 3:
@@ -38,7 +36,6 @@ def nftRoyalties(rs):
             try:
                 if obj2["assetId"] != "KLV":
                     rawdata.append({"assetdate": obj2["assetId"] + "<>" + tsf, "value": obj2["value"], "currency": currency})
-                    print("Data added to list")
             except:
                 print("Invalid or no Data")
     #start iteration to calculate NFT total ry
@@ -46,7 +43,6 @@ def nftRoyalties(rs):
     try:
         df = pd.DataFrame(rawdata)
         dfsum = df.groupby(df.assetdate).agg({'value':'sum','currency':'first'})
-        print("Pandas Dataframe created")
     except:
         print("Pandas Dataframe error")
     #transpose keys to match dict type
@@ -55,7 +51,6 @@ def nftRoyalties(rs):
             splitdata = k.split("<>")
             asset = splitdata[0].split("/")
             mongodata.append({"asset": asset[0], "value": float(v[0]), "date": splitdata[1], "currency": v[1]})
-        print("Data added to flist")
     except:
         print("Error trying to iterate df and adding data to list")
     #upload data to mongo
@@ -64,8 +59,6 @@ def nftRoyalties(rs):
         db = client.ktestnet
         nftrybyday = db["nftrybyday"]
         x = nftrybyday.insert_many(mongodata)
-        print("MongoDB Updated")
-        print("--------------")
     except:
         print("Error trying to upload data")
         print("--------------")
@@ -79,13 +72,12 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = data["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     nftRoyalties(rs)
 elif pages > 1:

@@ -18,7 +18,6 @@ def topSales(rs):
     mongodata = []
     try:
         data = json.loads(rs.text)
-        print("Request response OK")
     except:
         print("Request response error")
     #loop between klever .json and filter data to rawdata
@@ -40,7 +39,6 @@ def topSales(rs):
                 assetId = assetId[0]
             if currency == "KLV":
                 rawdata.append({"assetdate": assetId + "<>" + tsf, "value": amount, "currency": currency})
-            print("Data added to list")
         except:
             print("Invalid or empty data")
     
@@ -48,7 +46,6 @@ def topSales(rs):
     try:
         df = pd.DataFrame(rawdata)
         dftop = df.groupby(df.assetdate).max()
-        print("Pandas Dataframe created")
     except:
         print("Pandas Dataframe error")
     #loop dataframe to filter and clean data
@@ -56,18 +53,15 @@ def topSales(rs):
         try:
             splitdata = k.split("<>")
             mongodata.append({"asset": splitdata[0], "amount": v["value"], "date": splitdata[1], "currency": v["currency"]})
-            print("Data added to flist")
         except:
             print("Error trying to iterate df and adding data to list")
-    print(mongodata)
+
     #add data to mongodb
     try:
         client = pymongo.MongoClient(mongourl)
         db = client.ktestnet
         topsales = db["topsales"]
         x = topsales.insert_many(mongodata)
-        print("MongoDB Updated")
-        print("--------------")
     except:
         print("Error trying to upload data")
         print("--------------")
@@ -82,13 +76,12 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = data["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     topSales(rs)
 elif pages > 1:

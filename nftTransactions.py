@@ -16,7 +16,6 @@ def nftTransactions(rs):
     rawdata = []
     try:
         data = json.loads(rs.text)
-        print("Request response OK")
     except:
         print("Request response error")
     #loop between klever .json and filter data to rawdata
@@ -35,7 +34,6 @@ def nftTransactions(rs):
                 assetId = assetId.split("/")
                 assetId = assetId[0]
             rawdata.append({"asset": assetId, "value": amount, "datetime": ts, "currency": currency})
-            print("Data added to list")
         except:
             print("Invalid or empty data")
 
@@ -45,8 +43,6 @@ def nftTransactions(rs):
         db = client.ktestnet
         nfttransactions = db["nfttransactions"]
         x = nfttransactions.insert_many(rawdata)
-        print("MongoDB Updated")
-        print("--------------")
     except:
         print("Error trying to upload data")
         print("--------------")
@@ -61,13 +57,12 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = data["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     nftTransactions(rs)
 elif pages > 1:

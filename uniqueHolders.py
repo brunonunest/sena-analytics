@@ -23,13 +23,12 @@ datalist = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, '
 
 try:
     datalist = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = datalist["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     for obj in datalist["data"]["assets"]:
         assetlist.append(obj["assetId"])
@@ -47,14 +46,12 @@ def uniqueHolders():
         rs = requests.get(url + "/assets/holders/" + asset, headers=headers)
         try:
             data = json.loads(rs.text)
-            print("Request response OK")
         except:
             print("Request response error")
         #loop between klever .json and filter data to rawdata
         try:
             holders = data["pagination"]["totalRecords"]
             rawdata.append({"asset": asset, "amount": holders, "date": rawstartdate})
-            print("Data added to list")
         except:
             print("Invalid or empty data")
     df = pd.DataFrame(rawdata)
@@ -66,8 +63,6 @@ def uniqueHolders():
             db = client.ktestnet
             uniqueholders = db["uniqueholders"]
             x = uniqueholders.insert_one({"asset": v["asset"], "amount": v["amount"], "date": v["date"]})
-            print("MongoDB Updated")
-            print("--------------")
         except:
             print("Error trying to upload data")
             print("--------------")
