@@ -18,7 +18,6 @@ def averagePrice(rs):
     mongodata = []
     try:
         data = json.loads(rs.text)
-        print("Request response OK")
     except:
         print("Request response error")
     #loop between klever .json and filter data to mongodata, if response is valid
@@ -34,8 +33,7 @@ def averagePrice(rs):
             if marketType == "BuyItNowMarket":
                 #talvez fzer um loop aqui em obj["contract"], checar retorno exemplo**
                 price = float(obj["contract"][0][ "parameter"]["price"])
-                rawdata.append({"value": price, "currency": currency, "assetdate": assetId[0] + "<>" + tsf}) 
-                print("Data added to list")
+                rawdata.append({"value": price, "currency": currency, "assetdate": assetId[0] + "<>" + tsf})
             else:
                 continue
         except:
@@ -47,10 +45,8 @@ def averagePrice(rs):
         dfmin = df.groupby(df.assetdate).min()
         dfmax = df.groupby(df.assetdate).max()
         dfmean = df.groupby(df.assetdate).mean()
-        print("Pandas Dataframe created")
         dfmerge1 = dfmin.merge(dfmax, left_on='assetdate', right_on='assetdate', suffixes=('_min', '_max'))
         dfmerge2 = dfmerge1.merge(dfmean, left_on='assetdate', right_on='assetdate')
-        print(dfmerge2)
     except:
         print("Pandas Dataframe error")
     #loop dataframe to filter and clean data
@@ -58,7 +54,6 @@ def averagePrice(rs):
         try:
             splitdata = k.split("<>")
             mongodata.append({"average": v["value"], "min": v["value_min"], "max": v["value_max"], "date": splitdata[1], "currency": v["currency_max"], "asset": splitdata[0]})
-            print("Data added to flist")
         except:
             print("Error trying to iterate df and adding data to list")
     #upload data to mongodb
@@ -67,8 +62,6 @@ def averagePrice(rs):
         db = client.ktestnet
         pricesbyday = db["pricesbyday"]
         x = pricesbyday.insert_many(mongodata)
-        print("MongoDB Updated")
-        print("--------------")
     except:
         print("Error trying to upload data")
         print("--------------")
@@ -82,13 +75,12 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = data["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     averagePrice(rs)
 elif pages > 1:

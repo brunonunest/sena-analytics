@@ -21,7 +21,6 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
@@ -33,7 +32,6 @@ for k, v in data.items():
     try:
         if k == "pagination":
             total = v["totalRecords"]
-        print("Data added to list")
     except:
         print("Invalid or no Data")
 
@@ -51,6 +49,5 @@ try:
     db = client.ktestnet
     totaltransactions24 = db["totaltransactions24"]
     x = totaltransactions24.insert_one({"value": total, "datetime": ts})
-    print("MongoDB Updated")
 except:
     print("Error trying to upload data")

@@ -18,7 +18,6 @@ def dailyUsers(rs):
     mongodata = []
     try:
         data = json.loads(rs.text)
-        print("Request response OK")
     except:
         print("Request response error")
     #loop between klever .json and filter data to rawdata
@@ -39,7 +38,6 @@ def dailyUsers(rs):
                 assetId = assetId.split("/")
                 assetId = assetId[0]
             rawdata.append({"assetdate": assetId + "<>" + tsf, "value": amount, "user": user})
-            print("Data added to list")
         except:
             print("Invalid or empty data")
     #calculate daily users on data
@@ -48,9 +46,6 @@ def dailyUsers(rs):
         df = pd.DataFrame(rawdata)
         df = df.groupby(df.assetdate)
         df = df.user.nunique()
-        print("Pandas Dataframe created")
-        #dfmerge1 = dfmin.merge(dfmax, left_on='assetdate', right_on='assetdate', suffixes=('_min', '_max'))
-        #dfmerge2 = dfmerge1.merge(dfmean, left_on='assetdate', right_on='assetdate')
         #print(dfmerge2)
     except:
         print("Pandas Dataframe error")
@@ -59,18 +54,15 @@ def dailyUsers(rs):
         try:
             splitdata = k.split("<>")
             mongodata.append({"date": splitdata[1], "count": v, "asset": splitdata[0]})
-            print("Data added to flist")
         except:
             print("Error trying to iterate df and adding data to list")
     #add data to mongodb
-    print(mongodata)
+
     try:
         client = pymongo.MongoClient(mongourl)
         db = client.ktestnet
         dailyusers = db["dailyusers"]
         x = dailyusers.insert_many(mongodata)
-        print("MongoDB Updated")
-        print("--------------")
     except:
         print("Error trying to upload data")
         print("--------------")
@@ -85,13 +77,12 @@ data = {'data': {'transactions': []}, 'pagination': {'self': 1, 'next': 0, 'prev
 
 try:
     data = json.loads(rs.text)
-    print("Request response OK")
 except:
     print("Request response error")
 
 #check pagination
 pages = data["pagination"]["totalPages"]
-print(pages)
+
 if pages == 1:
     dailyUsers(rs)
 elif pages > 1:
